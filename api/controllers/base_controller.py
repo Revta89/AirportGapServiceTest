@@ -2,6 +2,8 @@ import requests
 from requests.exceptions import RequestException
 import logging
 
+from api.utils.json_schema_validator import validate_json_schema
+
 
 class BaseController:
     def __init__(self, base_url: str = None, headers: dict = None, cookies: dict = None, auth=None):
@@ -70,3 +72,7 @@ class BaseController:
         assert actual_code == expected_code, (
             f"Expected status {expected_code}, got {actual_code}. "
             f"Response body: {response.text[:200]}")
+
+    @staticmethod
+    def validate_schema_file(response: requests.Response, schema_file):
+        validate_json_schema(response.json(), schema_file)

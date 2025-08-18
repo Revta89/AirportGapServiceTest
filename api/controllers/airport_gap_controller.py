@@ -43,4 +43,4 @@ class AirportGapClient(BaseController):
         }
         response = self.post("/airports/distance", payload)
         self.assert_response_code(response, 200)
-        return response.json()
+        return response
