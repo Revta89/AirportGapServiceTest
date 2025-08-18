@@ -1,5 +1,4 @@
-from base_page import BasePage
-from ui.pages.inventory_page import InventoryPage
+from ui.pages.base_page import BasePage
 
 
 class CartPage(BasePage):
@@ -12,7 +11,3 @@ class CartPage(BasePage):
     def remove_first_item(self):
         self.click(self.REMOVE_BUTTON)
         return self
-
-    def continue_shopping(self):
-        self.click(self.CONTINUE_SHOPPING_BUTTON)
-        return InventoryPage(self.driver)

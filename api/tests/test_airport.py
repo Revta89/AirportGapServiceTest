@@ -7,6 +7,7 @@ def airports_api():
     return AirportGapClient()
 
 
+@pytest.mark.api
 def test_verify_airport_count(airports_api):
     """Scenario 1: Verify Airport Count is equal 30"""
     response = airports_api.get_airports()
@@ -14,6 +15,7 @@ def test_verify_airport_count(airports_api):
     assert len(response.json().get("data", [])) == 30, "Expected 30 airports"
 
 
+@pytest.mark.api
 def test_verify_specific_airports(airports_api):
     """Scenario 2: Verify Specific Airports"""
     required_airports = ["Akureyri Airport", "St. Anthony Airport", "CFB Bagotville"]
@@ -22,6 +24,7 @@ def test_verify_specific_airports(airports_api):
     assert not missing_airports, f"Missing airports: {', '.join(missing_airports)}"
 
 
+@pytest.mark.api
 def test_verify_distance_between_airports(airports_api):
     """Scenario 3: Проверка, что расстояние между KIX и NRT > 400 км"""
     response = airports_api.get_distance("KIX", "NRT")

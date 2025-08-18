@@ -26,9 +26,9 @@ class AirportGapClient(BaseController):
         Get all airport names
         return: List containing airport names
         """
-        response = self.get_airports().json()
+        response = self.get_airports()
         self.assert_response_code(response, 200)
-        return [airport["attributes"]["name"] for airport in response.get("data", [])]
+        return [airport["attributes"]["name"] for airport in response.json().get("data", [])]
 
     def get_distance(self, from_airport: str, to_airport: str) -> Response:
         """

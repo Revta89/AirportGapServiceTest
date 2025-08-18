@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from ui.pages.base_page import BasePage
 from ui.pages.cart_page import CartPage
-from ui.pages.login_page import LoginPage
 
 
 class InventoryPage(BasePage):
@@ -30,8 +29,3 @@ class InventoryPage(BasePage):
     def open_cart(self):
         self.click(self.CART_LINK)
         return CartPage(self.driver)
-
-    def logout(self):
-        self.click(self.MENU_BUTTON)
-        self.click(self.LOGOUT_LINK)
-        return LoginPage(self.driver)
