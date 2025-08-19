@@ -14,6 +14,7 @@ Automated test suite covering:
 - pytest (test framework)
 - Requests (HTTP for API tests)
 - Selenium WebDriver (UI automation)
+- jsonschema (JSON validation)
 
 
 ## Installation
