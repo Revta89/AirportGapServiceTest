@@ -1,7 +1,7 @@
 import requests
+from requests import Response
 from requests.exceptions import RequestException
 import logging
-
 from api.utils.json_schema_validator import validate_json_schema
 
 
@@ -9,8 +9,10 @@ class BaseController:
     def __init__(self, base_url: str = None, headers: dict = None, cookies: dict = None, auth=None):
         """
         Initialize the API client with base URL and default headers
-        :param base_url: Base URL for all API requests
-        :param headers: Dictionary of default headers
+        @param base_url: Base URL for all API requests
+        @param headers: Dictionary of default headers
+        @param cookies: user cookies
+        @param auth: user JWT token
         """
         self.base_url = base_url.rstrip('/') if base_url else ''
         self.auth = auth
@@ -19,12 +21,12 @@ class BaseController:
         self.session.headers.update(headers or {})
         self.logger = logging.getLogger(__name__)
 
-    def _send_request(self, method: str, endpoint: str, **kwargs) -> requests.Response:
+    def _send_request(self, method: str, endpoint: str, **kwargs) -> Response:
         """
         Send HTTP request and handle response
-        param method: HTTP method (get, post, put, delete, etc.)
-        param endpoint: API endpoint (e.g., '/airports')
-        param kwargs: Additional arguments for requests (params, json, headers, etc.)
+        @param method: HTTP method (get, post, put, delete, etc.)
+        @param endpoint: API endpoint (e.g., '/airports')
+        @param kwargs: Additional arguments for requests (params, json, headers, etc.)
         return: Response object
         """
         url = f"{self.base_url}{endpoint}"
@@ -38,19 +40,19 @@ class BaseController:
             self.logger.error(f"Request error occurred: {req_err}")
             raise
 
-    def get(self, endpoint: str, **kwargs) -> requests.Response:
+    def get(self, endpoint: str, **kwargs) -> Response:
         """Send GET request"""
         return self._send_request('get', endpoint, **kwargs)
 
-    def post(self, endpoint: str, payload: dict = None, **kwargs) -> requests.Response:
+    def post(self, endpoint: str, payload: dict = None, **kwargs) -> Response:
         """Send POST request"""
         return self._send_request('post', endpoint, json=payload, **kwargs)
 
-    def put(self, endpoint: str, payload: dict = None, **kwargs) -> requests.Response:
+    def put(self, endpoint: str, payload: dict = None, **kwargs) -> Response:
         """Send PUT request"""
         return self._send_request('put', endpoint, json=payload, **kwargs)
 
-    def delete(self, endpoint: str, **kwargs) -> requests.Response:
+    def delete(self, endpoint: str, **kwargs) -> Response:
         """Send DELETE request"""
         return self._send_request('delete', endpoint, **kwargs)
 
@@ -63,7 +65,7 @@ class BaseController:
         self.session.headers.pop(key, None)
 
     @staticmethod
-    def assert_response_code(response: requests.Response, expected_code: int):
+    def assert_response_code(response: Response, expected_code: int):
         """
         Assert that the response has the expected status code.
         Raises AssertionError if not.
@@ -74,5 +76,6 @@ class BaseController:
             f"Response body: {response.text[:200]}")
 
     @staticmethod
-    def validate_schema_file(response: requests.Response, schema_file):
+    def validate_schema_file(response: Response, schema_file) -> bool:
+        """Validation response with json schema"""
         validate_json_schema(response.json(), schema_file)

@@ -8,7 +8,6 @@ class InventoryPage(BasePage):
     ADD_TO_CART_BUTTON = (By.CSS_SELECTOR, "button.btn_inventory")
     CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
     MENU_BUTTON = (By.ID, "react-burger-menu-btn")
-    LOGOUT_LINK = (By.ID, "logout_sidebar_link")
     CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
 
     def __init__(self, driver):
@@ -17,7 +16,7 @@ class InventoryPage(BasePage):
     def get_inventory_items_count(self) -> int:
         return len(self.find_elements(self.INVENTORY_ITEMS))
 
-    def add_first_item_to_cart(self):
+    def add_first_item_to_cart(self) -> "InventoryPage":
         self.click(self.ADD_TO_CART_BUTTON)
         return self
 
@@ -26,6 +25,6 @@ class InventoryPage(BasePage):
             return int(self.get_text(self.CART_BADGE))
         return 0
 
-    def open_cart(self):
+    def open_cart(self) -> CartPage:
         self.click(self.CART_LINK)
         return CartPage(self.driver)

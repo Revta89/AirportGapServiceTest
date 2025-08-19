@@ -8,16 +8,13 @@ class AirportGapClient(BaseController):
     def __init__(self):
         super().__init__(
             base_url='https://airportgap.com/api',
-            headers={
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        )
+            headers={'Accept': 'application/json',
+                     'Content-Type': 'application/json'})
 
     def get_airports(self) -> Response:
         """
         Get all airports
-        return: Dictionary containing airports data
+        return: Response containing all airports data
         """
         return self.get('/airports')
 
@@ -33,9 +30,9 @@ class AirportGapClient(BaseController):
     def get_distance(self, from_airport: str, to_airport: str) -> Response:
         """
         Calculate distance between two airports
-        :param from_airport: IATA code of departure airport
-        :param to_airport: IATA code of arrival airport
-        :return: Dictionary containing distance data
+        @param from_airport: code of departure airport
+        @param to_airport: code of arrival airport
+        return: Response containing distance data
         """
         payload = {
             "from": from_airport,
